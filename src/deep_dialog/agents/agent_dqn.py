@@ -264,8 +264,9 @@ class AgentDQN(Agent):
              
     def load_trained_DQN(self, path):
         """ Load the trained DQN from a file """
-        
+
         trained_file = pickle.load(open(path, 'rb'))
+
         model = trained_file['model']
         
         print ("trained DQN Parameters:", json.dumps(trained_file['params'], indent=2))

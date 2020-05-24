@@ -19,6 +19,7 @@ from deep_dialog.usersims.usersim import UserSimulator
 from deep_dialog import dialog_config
 
 
+
 class RuleSimulator(UserSimulator):
     """ A rule-based user simulator for testing dialog policy """
     
@@ -39,7 +40,7 @@ class RuleSimulator(UserSimulator):
         self.simulator_act_level = params['simulator_act_level']
         
         self.learning_phase = params['learning_phase']
-
+        #self.response_action1 = '' #debug
 
     def initialize_episode(self):
         """ Initialize a new episode (dialog) 
@@ -211,6 +212,8 @@ class RuleSimulator(UserSimulator):
         response_action['turn'] = self.state['turn']
         response_action['nl'] = ""
         
+        #self.response_action1 = response_action # debug
+        #print('Response action:',response_action) # debug
         # add NL to dia_act
         self.add_nl_to_action(response_action)                       
         return response_action, self.episode_over, self.dialog_status

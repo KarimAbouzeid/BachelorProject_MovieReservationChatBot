@@ -280,7 +280,7 @@ def save_performance_records(path, agt, records):
     filename = 'agt_%s_performance_records.json' % (agt)
     filepath = os.path.join(path, filename)
     try:
-        json.dump(records, open(filepath, "wb"))
+        json.dump(records, open(filepath, "w"))#Changed from wb to w
         print ('saved model in %s' % (filepath, ))
     except Exception as e:
         print ('Error: Writing model fails: %s' % (filepath, ))
@@ -323,6 +323,7 @@ def warm_start_simulation():
     for episode in range(warm_start_epochs):
         dialog_manager.initialize_episode()
         episode_over = False
+        print('episode# :',episode)
         while(not episode_over):
             episode_over, reward = dialog_manager.next_turn()
             cumulative_reward += reward

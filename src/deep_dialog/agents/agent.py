@@ -40,16 +40,19 @@ class Agent:
         """ Take the current state and return an action according to the current exploration/exploitation policy
 
         We define the agents flexibly so that they can either operate on act_slot representations or act_slot_value representations.
-        We also define the responses flexibly, returning a dictionary with keys [act_slot_response, act_slot_value_response]. This way the command-line agent can continue to operate with values
+        We also define the responses flexibly, returning a dictionary with keys [act_slot_response, act_slot_value_response]. 
+        This way the command-line agent can continue to operate with values
 
         Arguments:
-        state      --   A tuple of (history, kb_results) where history is a sequence of previous actions and kb_results contains information on the number of results matching the current constraints.
+        state      --   A tuple of (history, kb_results) where history is a sequence of previous actions and kb_results contains information 
+                        on the number of results matching the current constraints.
         user_action         --   A legacy representation used to run the command line agent. We should remove this ASAP but not just yet
         available_actions   --   A list of the allowable actions in the current state
 
         Returns:
         act_slot_action         --   An action consisting of one act and >= 0 slots as well as which slots are informed vs requested.
-        act_slot_value_action   --   An action consisting of acts slots and values in the legacy format. This can be used in the future for training agents that take value into account and interact directly with the database
+        act_slot_value_action   --   An action consisting of acts slots and values in the legacy format. This can be used in the future for 
+                                     training agents that take value into account and interact directly with the database
         """
         act_slot_response = None
         act_slot_value_response = None

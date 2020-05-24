@@ -46,7 +46,7 @@ class nlu:
     
     def load_nlu_model(self, model_path):
         """ load the trained NLU model """  
-        with open(model_path, "rb") as f:
+        with open(model_path, "rb") as f:#changed from rb to r
             model_params = pickle.load(f, encoding="latin1")
         # model_params = pickle.load(open(model_path, 'rb'))
     

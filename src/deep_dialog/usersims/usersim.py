@@ -57,7 +57,10 @@ class UserSimulator:
         user_action['nl'] = user_nlg_sentence
         
         if self.simulator_act_level == 1:
-            user_nlu_res = self.nlu_model.generate_dia_act(user_action['nl']) # NLU
+            if isinstance(user_action['nl'], bytes):#Fix added to process byte object
+                user_nlu_res = self.nlu_model.generate_dia_act(user_action['nl'].decode()) # NLU
+            else:
+                user_nlu_res = self.nlu_model.generate_dia_act(user_action['nl']) # NLU
             if user_nlu_res != None:
                 #user_nlu_res['diaact'] = user_action['diaact'] # or not?
                 user_action.update(user_nlu_res)
