@@ -172,8 +172,10 @@ class nlg:
                 counter += 1
                 sentence = str(sentence).replace('$'+str(slot)+'$', '', 1)
                 continue
-            
-            sentence = str(sentence).replace('$'+str(slot)+'$', str(slot_val), 1)
+
+            sentence = str(sentence)[2:-1].replace('$'+str(slot)+'$', str(slot_val), 1)
+
+            # print(sentence)
         
         if counter > 0 and counter == len(dia_act['inform_slots']):
             sentence = dialog_config.I_DO_NOT_CARE

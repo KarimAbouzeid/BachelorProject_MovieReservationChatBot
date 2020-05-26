@@ -55,10 +55,10 @@ class UserSimulator:
         
         user_nlg_sentence = self.nlg_model.convert_diaact_to_nl(user_action, 'usr')
         user_action['nl'] = user_nlg_sentence
-        
+
         if self.simulator_act_level == 1:
             if isinstance(user_action['nl'], bytes):#Fix added to process byte object
-                user_nlu_res = self.nlu_model.generate_dia_act(user_action['nl'].decode()) # NLU
+                user_nlu_res = self.nlu_model.generate_dia_act(user_action['nl'].decode('latin1')) # NLU
             else:
                 user_nlu_res = self.nlu_model.generate_dia_act(user_action['nl']) # NLU
             if user_nlu_res != None:

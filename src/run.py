@@ -323,7 +323,6 @@ def warm_start_simulation():
     for episode in range(warm_start_epochs):
         dialog_manager.initialize_episode()
         episode_over = False
-        print('episode# :',episode)
         while(not episode_over):
             episode_over, reward = dialog_manager.next_turn()
             cumulative_reward += reward
