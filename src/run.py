@@ -28,6 +28,7 @@
 
 import argparse, json, copy, os
 import pickle
+import datetime as dt #Added to count time
 
 from deep_dialog.dialog_system import DialogManager, text_to_dict
 from deep_dialog.agents import AgentCmd, InformAgent, RequestAllAgent, RandomAgent, EchoAgent, RequestBasicsAgent, AgentDQN
@@ -356,7 +357,7 @@ def run_episodes(count, status):
         print ('warm_start starting ...')
         warm_start_simulation()
         print ('warm_start finished, start RL training ...')
-    
+    startTime = dt.datetime.now()#Added to count time
     for episode in range(count):
         print ("Episode: %s" % (episode))
         dialog_manager.initialize_episode()
@@ -403,7 +404,8 @@ def run_episodes(count, status):
             if episode % save_check_point == 0 and params['trained_model_path'] == None: # save the model every 10 episodes
                 save_model(params['write_model_dir'], agt, best_res['success_rate'], best_model['model'], best_res['epoch'], episode)
                 save_performance_records(params['write_model_dir'], agt, performance_records)
-        
+        endTime = dt.datetime.now()#Added to count time
+        print ('Time taken :',endTime - startTime) #Added to count time
         print("Progress: %s / %s, Success rate: %s / %s Avg reward: %.2f Avg turns: %.2f" % (episode+1, count, successes, episode+1, float(cumulative_reward)/(episode+1), float(cumulative_turns)/(episode+1)))
     print("Success rate: %s / %s Avg reward: %.2f Avg turns: %.2f" % (successes, count, float(cumulative_reward)/count, float(cumulative_turns)/count))
     status['successes'] += successes

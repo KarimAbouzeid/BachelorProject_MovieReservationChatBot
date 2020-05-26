@@ -170,10 +170,10 @@ class nlg:
                 break
             elif slot_val == dialog_config.I_DO_NOT_CARE:
                 counter += 1
-                sentence = str(sentence).replace('$'+str(slot)+'$', '', 1)
+                sentence = str(sentence)[2:-1].replace('$'+str(slot)+'$', '', 1)#Added [2:-1] here
                 continue
 
-            sentence = str(sentence)[2:-1].replace('$'+str(slot)+'$', str(slot_val), 1)
+            sentence = str(sentence)[2:-1].replace('$'+str(slot)+'$', str(slot_val), 1) #Added [2:-1] here
 
             # print(sentence)
         
