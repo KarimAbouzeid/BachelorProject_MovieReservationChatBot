@@ -1,4 +1,4 @@
-# End-to-End Task-Completion Neural Dialogue Systems
+# End-to-End Task-Completion Neural Dialogue Systems USING Client/Server Architecture
 *An implementation of the  
 [End-to-End Task-Completion Neural Dialogue Systems](http://arxiv.org/abs/1703.01008) and
 [A User Simulator for Task-Completion Dialogues](http://arxiv.org/abs/1612.05688).*
