@@ -256,11 +256,28 @@ best_res = {'success_rate': 0, 'ave_reward':float('-inf'), 'ave_turns': float('i
 best_model['model'] = copy.deepcopy(agent)
 best_res['success_rate'] = 0
 
+
 performance_records = {}
 performance_records['success_rate'] = {}
 performance_records['ave_turns'] = {}
 performance_records['ave_reward'] = {}
+time = {}
+time['time_taken'] = {}
+time['time_taken_so_far'] = {}
+time['time_taken_so_far_minutes'] = {}
 
+
+
+def save_time(path, records):
+            filename = 'ClientServerTime.json' 
+            filepath = os.path.join(path, filename)
+            time_str = str(records)
+            try:
+                json.dump(time_str, open(filepath, "w"))
+                print ('Time of the episode saved in %s' % (filepath, ))
+            except Exception as e:
+                print ('Error: Writing model fails: %s' % (filepath, ))
+                print (e)
 
 """ Save model """
 def save_model(path, agt, success_rate, agent, best_epoch, cur_epoch):
@@ -303,8 +320,8 @@ def simulation_epoch(simulation_epoch_size):
             if episode_over:
                 if reward > 0: 
                     successes += 1
-                    print ("simulation episode %s: Success" % (episode))
-                else: print ("simulation episode %s: Fail" % (episode))
+                    #print ("simulation episode %s: Success" % (episode))
+                #else: print ("simulation episode %s: Fail" % (episode))
                 cumulative_turns += dialog_manager.state_tracker.turn_count
     
     res['success_rate'] = float(successes)/simulation_epoch_size
@@ -330,8 +347,8 @@ def warm_start_simulation():
             if episode_over:
                 if reward > 0: 
                     successes += 1
-                    print ("warm_start simulation episode %s: Success" % (episode))
-                else: print ("warm_start simulation episode %s: Fail" % (episode))
+                    #print ("warm_start sode %s: Success" % (episode))
+                #else: print ("warm_start simulation episode %s: Fail" % (episode))
                 cumulative_turns += dialog_manager.state_tracker.turn_count
         
         warm_start_run_epochs += 1
@@ -359,6 +376,8 @@ def run_episodes(count, status):
         print ('warm_start finished, start RL training ...')
     startTime = dt.datetime.now()#Added to count time
     for episode in range(count):
+        startTimeEpisode = dt.datetime.now()
+        print('')
         print ("Episode: %s" % (episode))
         dialog_manager.initialize_episode()
         episode_over = False
@@ -405,7 +424,30 @@ def run_episodes(count, status):
                 save_model(params['write_model_dir'], agt, best_res['success_rate'], best_model['model'], best_res['epoch'], episode)
                 save_performance_records(params['write_model_dir'], agt, performance_records)
         endTime = dt.datetime.now()#Added to count time
-        print ('Time taken :',endTime - startTime) #Added to count time
+
+
+        time_taken = endTime - startTimeEpisode
+        hours = time_taken.seconds // 3600
+        minutes = (time_taken.seconds % 3600) // 60
+        seconds = time_taken.seconds % 60
+        stringtime = f"{minutes} minutes {seconds} seconds"
+        time['time_taken'][episode] = stringtime
+
+        time_taken = endTime - startTime
+        hours = time_taken.seconds // 3600
+        minutes = (time_taken.seconds % 3600) // 60
+        seconds = time_taken.seconds % 60
+        stringtime = f"{hours} hours {minutes} minutes {seconds} seconds"
+        time['time_taken_so_far'][episode] = stringtime
+        time['time_taken_so_far_minutes'][episode] = minutes
+        if(params["act_level"]) == 1:
+             save_time('./deep_dialog/checkpoints/rl_agent/noClientServerAgent/NLP', time)
+        else:
+            save_time('./deep_dialog/checkpoints/rl_agent/noClientServerAgent/noNLP', time)
+
+        print ('Time of the episode :',endTime - startTimeEpisode) #Added to count time
+        print ('Time so far :',endTime - startTime) #Added to count time
+        
         print("Progress: %s / %s, Success rate: %s / %s Avg reward: %.2f Avg turns: %.2f" % (episode+1, count, successes, episode+1, float(cumulative_reward)/(episode+1), float(cumulative_turns)/(episode+1)))
     print("Success rate: %s / %s Avg reward: %.2f Avg turns: %.2f" % (successes, count, float(cumulative_reward)/count, float(cumulative_turns)/count))
     status['successes'] += successes
